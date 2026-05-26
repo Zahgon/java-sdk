@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType"})
+@SuppressWarnings({ "PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType" })
 abstract class AbstractStructure implements Structure {
 
     protected final Map<String, Value> attributes;
 
     @Override
     public boolean isEmpty() {
-        return attributes == null || attributes.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     AbstractStructure() {
@@ -29,7 +29,7 @@ abstract class AbstractStructure implements Structure {
      * @return immutable map
      */
     public Map<String, Value> asUnmodifiableMap() {
-        return Collections.unmodifiableMap(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -39,26 +39,16 @@ abstract class AbstractStructure implements Structure {
      */
     @Override
     public Map<String, Object> asObjectMap() {
-        return attributes.entrySet().stream()
-                // custom collector, workaround for Collectors.toMap in JDK8
-                // https://bugs.openjdk.org/browse/JDK-8148463
-                .collect(
-                        HashMap::new,
-                        (accumulated, entry) -> accumulated.put(entry.getKey(), convertValue(entry.getValue())),
-                        HashMap::putAll);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof AbstractStructure)) {
-            return false;
-        }
-        AbstractStructure that = (AbstractStructure) object;
-        return Objects.equals(attributes, that.attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

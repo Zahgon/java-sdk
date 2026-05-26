@@ -35,17 +35,15 @@ public class ImmutableTrackingEventDetails implements TrackingEventDetails {
      * Returns the optional tracking value.
      */
     public Optional<Number> getValue() {
-        return Optional.ofNullable(value);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SuppressWarnings("all")
     private static class DelegateExclusions {
+
         @ExcludeFromGeneratedCoverageReport
-        public <T extends Structure> Map<String, Value> merge(
-                Function<Map<String, Value>, Structure> newStructure,
-                Map<String, Value> base,
-                Map<String, Value> overriding) {
-            return null;
+        public <T extends Structure> Map<String, Value> merge(Function<Map<String, Value>, Structure> newStructure, Map<String, Value> base, Map<String, Value> overriding) {
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

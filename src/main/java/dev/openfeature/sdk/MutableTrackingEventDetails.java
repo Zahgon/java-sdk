@@ -36,59 +36,49 @@ public class MutableTrackingEventDetails implements TrackingEventDetails {
      * Returns the optional tracking value.
      */
     public Optional<Number> getValue() {
-        return Optional.ofNullable(value);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // override @Delegate methods so that we can use "add" methods and still return MutableTrackingEventDetails,
     // not Structure
     public MutableTrackingEventDetails add(String key, Boolean value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, String value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, Integer value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, Double value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, Instant value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, Structure value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, List<Value> value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableTrackingEventDetails add(String key, Value value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SuppressWarnings("all")
     private static class DelegateExclusions {
+
         @ExcludeFromGeneratedCoverageReport
-        public <T extends Structure> Map<String, Value> merge(
-                Function<Map<String, Value>, Structure> newStructure,
-                Map<String, Value> base,
-                Map<String, Value> overriding) {
-            return null;
+        public <T extends Structure> Map<String, Value> merge(Function<Map<String, Value>, Structure> newStructure, Map<String, Value> base, Map<String, Value> overriding) {
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

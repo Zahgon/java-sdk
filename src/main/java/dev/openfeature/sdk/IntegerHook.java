@@ -10,6 +10,6 @@ public interface IntegerHook extends Hook<Integer> {
 
     @Override
     default boolean supportsFlagValueType(FlagValueType flagValueType) {
-        return FlagValueType.INTEGER == flagValueType;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

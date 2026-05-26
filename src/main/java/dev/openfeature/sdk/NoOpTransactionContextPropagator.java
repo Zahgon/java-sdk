@@ -12,12 +12,14 @@ public class NoOpTransactionContextPropagator implements TransactionContextPropa
      */
     @Override
     public EvaluationContext getTransactionContext() {
-        return new ImmutableContext();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setTransactionContext(EvaluationContext evaluationContext) {}
+    public void setTransactionContext(EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

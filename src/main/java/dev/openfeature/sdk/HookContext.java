@@ -15,8 +15,11 @@ import lombok.ToString;
 @EqualsAndHashCode
 @ToString
 public final class HookContext<T> {
+
     private final SharedHookContext<T> sharedContext;
+
     private EvaluationContext ctx;
+
     private final HookData hookData;
 
     HookContext(@NonNull SharedHookContext<T> sharedContext, EvaluationContext evaluationContext, HookData hookData) {
@@ -38,14 +41,7 @@ public final class HookContext<T> {
      * @deprecated HookContext is initialized by the SDK and passed to hooks. Users should not create new instances.
      */
     @Deprecated
-    HookContext(
-            @NonNull String flagKey,
-            @NonNull FlagValueType type,
-            @NonNull T defaultValue,
-            @NonNull EvaluationContext ctx,
-            ClientMetadata clientMetadata,
-            Metadata providerMetadata,
-            HookData hookData) {
+    HookContext(@NonNull String flagKey, @NonNull FlagValueType type, @NonNull T defaultValue, @NonNull EvaluationContext ctx, ClientMetadata clientMetadata, Metadata providerMetadata, HookData hookData) {
         this(new SharedHookContext<>(flagKey, type, clientMetadata, providerMetadata, defaultValue), ctx, hookData);
     }
 
@@ -63,22 +59,8 @@ public final class HookContext<T> {
      * @deprecated HookContext is initialized by the SDK and passed to hooks. Users should not create new instances.
      */
     @Deprecated
-    public static <T> HookContext<T> from(
-            String key,
-            FlagValueType type,
-            ClientMetadata clientMetadata,
-            Metadata providerMetadata,
-            EvaluationContext ctx,
-            T defaultValue) {
-        return HookContext.<T>builder()
-                .flagKey(key)
-                .type(type)
-                .clientMetadata(clientMetadata)
-                .providerMetadata(providerMetadata)
-                .ctx(ctx)
-                .defaultValue(defaultValue)
-                .hookData(null)
-                .build();
+    public static <T> HookContext<T> from(String key, FlagValueType type, ClientMetadata clientMetadata, Metadata providerMetadata, EvaluationContext ctx, T defaultValue) {
+        return HookContext.<T>builder().flagKey(key).type(type).clientMetadata(clientMetadata).providerMetadata(providerMetadata).ctx(ctx).defaultValue(defaultValue).hookData(null).build();
     }
 
     /**
@@ -93,37 +75,41 @@ public final class HookContext<T> {
         return new HookContextBuilder<T>();
     }
 
-    public @NonNull String getFlagKey() {
-        return sharedContext.getFlagKey();
+    @NonNull
+    public String getFlagKey() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public @NonNull FlagValueType getType() {
-        return sharedContext.getType();
+    @NonNull
+    public FlagValueType getType() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public @NonNull T getDefaultValue() {
-        return sharedContext.getDefaultValue();
+    @NonNull
+    public T getDefaultValue() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public @NonNull EvaluationContext getCtx() {
-        return this.ctx;
+    @NonNull
+    public EvaluationContext getCtx() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ClientMetadata getClientMetadata() {
-        return sharedContext.getClientMetadata();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Metadata getProviderMetadata() {
-        return sharedContext.getProviderMetadata();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Intentional exposure of hookData")
     public HookData getHookData() {
-        return this.hookData;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     void setCtx(@NonNull EvaluationContext ctx) {
-        this.ctx = ctx;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -136,16 +122,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withFlagKey(@NonNull String flagKey) {
-        return Objects.equals(this.getFlagKey(), flagKey)
-                ? this
-                : new HookContext<T>(
-                        flagKey,
-                        this.getType(),
-                        this.getDefaultValue(),
-                        this.getCtx(),
-                        this.getClientMetadata(),
-                        this.getProviderMetadata(),
-                        this.hookData);
+        return Objects.equals(this.getFlagKey(), flagKey) ? this : new HookContext<T>(flagKey, this.getType(), this.getDefaultValue(), this.getCtx(), this.getClientMetadata(), this.getProviderMetadata(), this.hookData);
     }
 
     /**
@@ -158,16 +135,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withType(@NonNull FlagValueType type) {
-        return this.getType() == type
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        type,
-                        this.getDefaultValue(),
-                        this.getCtx(),
-                        this.getClientMetadata(),
-                        this.getProviderMetadata(),
-                        this.hookData);
+        return this.getType() == type ? this : new HookContext<T>(this.getFlagKey(), type, this.getDefaultValue(), this.getCtx(), this.getClientMetadata(), this.getProviderMetadata(), this.hookData);
     }
 
     /**
@@ -180,16 +148,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withDefaultValue(@NonNull T defaultValue) {
-        return this.getDefaultValue() == defaultValue
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        this.getType(),
-                        defaultValue,
-                        this.getCtx(),
-                        this.getClientMetadata(),
-                        this.getProviderMetadata(),
-                        this.hookData);
+        return this.getDefaultValue() == defaultValue ? this : new HookContext<T>(this.getFlagKey(), this.getType(), defaultValue, this.getCtx(), this.getClientMetadata(), this.getProviderMetadata(), this.hookData);
     }
 
     /**
@@ -202,16 +161,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withCtx(@NonNull EvaluationContext ctx) {
-        return this.ctx == ctx
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        this.getType(),
-                        this.getDefaultValue(),
-                        ctx,
-                        this.getClientMetadata(),
-                        this.getProviderMetadata(),
-                        this.hookData);
+        return this.ctx == ctx ? this : new HookContext<T>(this.getFlagKey(), this.getType(), this.getDefaultValue(), ctx, this.getClientMetadata(), this.getProviderMetadata(), this.hookData);
     }
 
     /**
@@ -224,16 +174,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withClientMetadata(ClientMetadata clientMetadata) {
-        return this.getClientMetadata() == clientMetadata
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        this.getType(),
-                        this.getDefaultValue(),
-                        this.getCtx(),
-                        clientMetadata,
-                        this.getProviderMetadata(),
-                        this.hookData);
+        return this.getClientMetadata() == clientMetadata ? this : new HookContext<T>(this.getFlagKey(), this.getType(), this.getDefaultValue(), this.getCtx(), clientMetadata, this.getProviderMetadata(), this.hookData);
     }
 
     /**
@@ -246,16 +187,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withProviderMetadata(Metadata providerMetadata) {
-        return this.getProviderMetadata() == providerMetadata
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        this.getType(),
-                        this.getDefaultValue(),
-                        this.getCtx(),
-                        this.getClientMetadata(),
-                        providerMetadata,
-                        this.hookData);
+        return this.getProviderMetadata() == providerMetadata ? this : new HookContext<T>(this.getFlagKey(), this.getType(), this.getDefaultValue(), this.getCtx(), this.getClientMetadata(), providerMetadata, this.hookData);
     }
 
     /**
@@ -268,16 +200,7 @@ public final class HookContext<T> {
     @ExcludeFromGeneratedCoverageReport
     @Deprecated
     public HookContext<T> withHookData(HookData hookData) {
-        return this.hookData == hookData
-                ? this
-                : new HookContext<T>(
-                        this.getFlagKey(),
-                        this.getType(),
-                        this.getDefaultValue(),
-                        this.getCtx(),
-                        this.getClientMetadata(),
-                        this.getProviderMetadata(),
-                        hookData);
+        return this.hookData == hookData ? this : new HookContext<T>(this.getFlagKey(), this.getType(), this.getDefaultValue(), this.getCtx(), this.getClientMetadata(), this.getProviderMetadata(), hookData);
     }
 
     /**
@@ -289,57 +212,58 @@ public final class HookContext<T> {
     @Deprecated
     @ToString
     public static class HookContextBuilder<T> {
+
         private String flagKey;
+
         private FlagValueType type;
+
         private T defaultValue;
+
         private EvaluationContext ctx;
+
         private ClientMetadata clientMetadata;
+
         private Metadata providerMetadata;
+
         private HookData hookData;
 
-        HookContextBuilder() {}
+        HookContextBuilder() {
+        }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> flagKey(@NonNull String flagKey) {
-            this.flagKey = flagKey;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> type(@NonNull FlagValueType type) {
-            this.type = type;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> defaultValue(@NonNull T defaultValue) {
-            this.defaultValue = defaultValue;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> ctx(@NonNull EvaluationContext ctx) {
-            this.ctx = ctx;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> clientMetadata(ClientMetadata clientMetadata) {
-            this.clientMetadata = clientMetadata;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> providerMetadata(Metadata providerMetadata) {
-            this.providerMetadata = providerMetadata;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         @SuppressFBWarnings(value = "EI_EXPOSE_REP2", justification = "Intentional exposure of hookData")
         @ExcludeFromGeneratedCoverageReport
         public HookContextBuilder<T> hookData(HookData hookData) {
-            this.hookData = hookData;
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -349,14 +273,7 @@ public final class HookContext<T> {
          */
         @ExcludeFromGeneratedCoverageReport
         public HookContext<T> build() {
-            return new HookContext<T>(
-                    this.flagKey,
-                    this.type,
-                    this.defaultValue,
-                    this.ctx,
-                    this.clientMetadata,
-                    this.providerMetadata,
-                    this.hookData);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

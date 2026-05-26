@@ -15,7 +15,7 @@ import lombok.ToString;
  * be modified after instantiation.
  */
 @ToString
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType"})
+@SuppressWarnings({ "PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType" })
 @EqualsAndHashCode(callSuper = true)
 public class MutableStructure extends AbstractStructure {
 
@@ -29,54 +29,46 @@ public class MutableStructure extends AbstractStructure {
 
     @Override
     public Set<String> keySet() {
-        return attributes.keySet();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // getters
     @Override
     public Value getValue(String key) {
-        return attributes.get(key);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // adders
     public MutableStructure add(String key, Value value) {
-        attributes.put(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, Boolean value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, String value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, Integer value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, Double value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, Instant value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, Structure value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableStructure add(String key, List<Value> value) {
-        attributes.put(key, new Value(value));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -86,6 +78,6 @@ public class MutableStructure extends AbstractStructure {
      */
     @Override
     public Map<String, Value> asMap() {
-        return new HashMap<>(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

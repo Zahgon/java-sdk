@@ -10,6 +10,6 @@ public interface ObjectHook extends Hook<Object> {
 
     @Override
     default boolean supportsFlagValueType(FlagValueType flagValueType) {
-        return FlagValueType.OBJECT == flagValueType;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

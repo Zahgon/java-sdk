@@ -25,10 +25,12 @@ class EventSupport {
     // we use a v4 uuid as a "placeholder" for anonymous clients, since
     // ConcurrentHashMap doesn't support nulls
     private static final String DEFAULT_CLIENT_UUID = UUID.randomUUID().toString();
+
     private final Map<String, HandlerStore> handlerStores = new ConcurrentHashMap<>();
+
     private final HandlerStore globalHandlerStore = new HandlerStore();
-    private final ExecutorService taskExecutor =
-            Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-event-handler-thread", true));
+
+    private final ExecutorService taskExecutor = Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-event-handler-thread", true));
 
     /**
      * Run all the event handlers associated with this domain.
@@ -39,12 +41,7 @@ class EventSupport {
      * @param eventDetails the event details
      */
     public void runClientHandlers(String domain, ProviderEvent event, EventDetails eventDetails) {
-        domain = Optional.ofNullable(domain).orElse(DEFAULT_CLIENT_UUID);
-
-        // run handlers if they exist
-        Optional.ofNullable(handlerStores.get(domain))
-                .map(store -> store.handlerMap.get(event))
-                .ifPresent(handlers -> handlers.forEach(handler -> runHandler(handler, eventDetails)));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -54,9 +51,7 @@ class EventSupport {
      * @param eventDetails the event details
      */
     public void runGlobalHandlers(ProviderEvent event, EventDetails eventDetails) {
-        globalHandlerStore.handlerMap.get(event).forEach(handler -> {
-            runHandler(handler, eventDetails);
-        });
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -67,15 +62,7 @@ class EventSupport {
      * @param handler the handler function to run
      */
     public void addClientHandler(String domain, ProviderEvent event, Consumer<EventDetails> handler) {
-        final String name = Optional.ofNullable(domain).orElse(DEFAULT_CLIENT_UUID);
-
-        // lazily create and cache a HandlerStore if it doesn't exist
-        HandlerStore store = Optional.ofNullable(this.handlerStores.get(name)).orElseGet(() -> {
-            HandlerStore newStore = new HandlerStore();
-            this.handlerStores.put(name, newStore);
-            return newStore;
-        });
-        store.addHandler(event, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -87,8 +74,7 @@ class EventSupport {
      * @param handler the handler ref to be removed
      */
     public void removeClientHandler(String domain, ProviderEvent event, Consumer<EventDetails> handler) {
-        domain = Optional.ofNullable(domain).orElse(DEFAULT_CLIENT_UUID);
-        this.handlerStores.get(domain).removeHandler(event, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -98,7 +84,7 @@ class EventSupport {
      * @param handler the handler to be added
      */
     public void addGlobalHandler(ProviderEvent event, Consumer<EventDetails> handler) {
-        this.globalHandlerStore.addHandler(event, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -108,7 +94,7 @@ class EventSupport {
      * @param handler the handler ref to be removed
      */
     public void removeGlobalHandler(ProviderEvent event, Consumer<EventDetails> handler) {
-        this.globalHandlerStore.removeHandler(event, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -117,7 +103,7 @@ class EventSupport {
      * @return set of domain names
      */
     public Set<String> getAllDomainNames() {
-        return this.handlerStores.keySet();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -127,13 +113,7 @@ class EventSupport {
      * @param eventDetails the event details
      */
     public void runHandler(Consumer<EventDetails> handler, EventDetails eventDetails) {
-        taskExecutor.submit(() -> {
-            try {
-                handler.accept(eventDetails);
-            } catch (Exception e) {
-                log.error("Exception in event handler {}", handler, e);
-            }
-        });
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -141,16 +121,7 @@ class EventSupport {
      * or timeout period has elapsed.
      */
     public void shutdown() {
-        taskExecutor.shutdown();
-        try {
-            if (!taskExecutor.awaitTermination(SHUTDOWN_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                log.warn("Task executor did not terminate before the timeout period had elapsed");
-                taskExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            taskExecutor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // Handler store maintains a set of handlers for each event type.
@@ -169,11 +140,11 @@ class EventSupport {
         }
 
         void addHandler(ProviderEvent event, Consumer<EventDetails> handler) {
-            handlerMap.get(event).add(handler);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         void removeHandler(ProviderEvent event, Consumer<EventDetails> handler) {
-            handlerMap.get(event).remove(handler);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

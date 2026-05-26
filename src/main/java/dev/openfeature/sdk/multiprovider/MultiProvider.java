@@ -39,7 +39,9 @@ public class MultiProvider extends EventProvider {
     public static final int INIT_THREADS_COUNT = Runtime.getRuntime().availableProcessors();
 
     private final Map<String, FeatureProvider> providers;
+
     private final Strategy strategy;
+
     private MultiProviderMetadata metadata;
 
     /**
@@ -64,15 +66,7 @@ public class MultiProvider extends EventProvider {
     }
 
     protected static Map<String, FeatureProvider> buildProviders(List<FeatureProvider> providers) {
-        Map<String, FeatureProvider> providersMap = new LinkedHashMap<>(providers.size());
-        for (FeatureProvider provider : providers) {
-            FeatureProvider prevProvider =
-                    providersMap.put(provider.getMetadata().getName(), provider);
-            if (prevProvider != null) {
-                log.info("duplicated provider name: {}", provider.getMetadata().getName());
-            }
-        }
-        return Collections.unmodifiableMap(providersMap);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -84,96 +78,42 @@ public class MultiProvider extends EventProvider {
      */
     @Override
     public void initialize(EvaluationContext evaluationContext) throws Exception {
-        var metadataBuilder = MultiProviderMetadata.builder().name(NAME);
-        HashMap<String, Metadata> providersMetadata = new HashMap<>();
-
-        if (providers.isEmpty()) {
-            metadataBuilder.originalMetadata(Collections.unmodifiableMap(providersMetadata));
-            metadata = metadataBuilder.build();
-            return;
-        }
-
-        ExecutorService executorService = Executors.newFixedThreadPool(Math.min(INIT_THREADS_COUNT, providers.size()));
-        try {
-            Collection<Callable<Void>> tasks = new ArrayList<>(providers.size());
-            for (FeatureProvider provider : providers.values()) {
-                tasks.add(() -> {
-                    provider.initialize(evaluationContext);
-                    return null;
-                });
-                Metadata providerMetadata = provider.getMetadata();
-                providersMetadata.put(providerMetadata.getName(), providerMetadata);
-            }
-
-            metadataBuilder.originalMetadata(Collections.unmodifiableMap(providersMetadata));
-
-            List<Future<Void>> results = executorService.invokeAll(tasks);
-            for (Future<Void> result : results) {
-                // This will re-throw any exception from the provider's initialize method,
-                // wrapped in an ExecutionException.
-                result.get();
-            }
-        } catch (Exception e) {
-            // If initialization fails for any provider, attempt to shut down via the
-            // standard shutdown path to avoid a partial/limbo state.
-            try {
-                shutdown();
-            } catch (Exception shutdownEx) {
-                log.error("error during shutdown after failed initialize", shutdownEx);
-            }
-            throw e;
-        } finally {
-            executorService.shutdown();
-        }
-
-        metadata = metadataBuilder.build();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SuppressFBWarnings(value = "EI_EXPOSE_REP")
     @Override
     public Metadata getMetadata() {
-        return metadata;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ProviderEvaluation<Boolean> getBooleanEvaluation(String key, Boolean defaultValue, EvaluationContext ctx) {
-        return strategy.evaluate(
-                providers, key, defaultValue, ctx, p -> p.getBooleanEvaluation(key, defaultValue, ctx));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ProviderEvaluation<String> getStringEvaluation(String key, String defaultValue, EvaluationContext ctx) {
-        return strategy.evaluate(providers, key, defaultValue, ctx, p -> p.getStringEvaluation(key, defaultValue, ctx));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ProviderEvaluation<Integer> getIntegerEvaluation(String key, Integer defaultValue, EvaluationContext ctx) {
-        return strategy.evaluate(
-                providers, key, defaultValue, ctx, p -> p.getIntegerEvaluation(key, defaultValue, ctx));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ProviderEvaluation<Double> getDoubleEvaluation(String key, Double defaultValue, EvaluationContext ctx) {
-        return strategy.evaluate(providers, key, defaultValue, ctx, p -> p.getDoubleEvaluation(key, defaultValue, ctx));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ProviderEvaluation<Value> getObjectEvaluation(String key, Value defaultValue, EvaluationContext ctx) {
-        return strategy.evaluate(providers, key, defaultValue, ctx, p -> p.getObjectEvaluation(key, defaultValue, ctx));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public void shutdown() {
-        log.debug("shutdown begin");
-        for (FeatureProvider provider : providers.values()) {
-            try {
-                provider.shutdown();
-            } catch (Exception e) {
-                log.error("error shutdown provider {}", provider.getMetadata().getName(), e);
-            }
-        }
-        log.debug("shutdown end");
-        // Important: ensure EventProvider's executor is also shut down
-        super.shutdown();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

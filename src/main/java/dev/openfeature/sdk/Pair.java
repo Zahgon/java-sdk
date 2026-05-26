@@ -5,6 +5,7 @@ import lombok.ToString;
 
 @ToString
 class Pair<K, V> {
+
     private final K key;
 
     @Setter
@@ -16,14 +17,14 @@ class Pair<K, V> {
     }
 
     public K getKey() {
-        return key;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public V getValue() {
-        return value;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public static <K, V> Pair<K, V> of(K key, V value) {
-        return new Pair<>(key, value);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -18,7 +18,7 @@ import lombok.ToString;
  */
 @ToString
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings({"PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType"})
+@SuppressWarnings({ "PMD.BeanMembersShouldSerialize", "checkstyle:MissingJavadocType" })
 public final class ImmutableStructure extends AbstractStructure {
 
     /**
@@ -43,14 +43,13 @@ public final class ImmutableStructure extends AbstractStructure {
 
     @Override
     public Set<String> keySet() {
-        return new HashSet<>(this.attributes.keySet());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // getters
     @Override
     public Value getValue(String key) {
-        Value value = attributes.get(key);
-        return value != null ? value.clone() : null;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -60,7 +59,7 @@ public final class ImmutableStructure extends AbstractStructure {
      */
     @Override
     public Map<String, Value> asMap() {
-        return copyAttributes(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private static Map<String, Value> copyAttributes(Map<String, Value> in) {

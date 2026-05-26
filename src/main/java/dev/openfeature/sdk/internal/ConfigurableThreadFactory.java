@@ -10,7 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class ConfigurableThreadFactory implements ThreadFactory {
 
     private final AtomicInteger counter = new AtomicInteger();
+
     private final String namePrefix;
+
     private final boolean daemon;
 
     /**
@@ -35,9 +37,6 @@ public final class ConfigurableThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable runnable) {
-        final Thread thread = new Thread(runnable);
-        thread.setDaemon(daemon);
-        thread.setName(namePrefix + "-" + counter.incrementAndGet());
-        return thread;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

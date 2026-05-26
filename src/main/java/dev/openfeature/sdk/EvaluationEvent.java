@@ -19,6 +19,6 @@ public class EvaluationEvent {
     private Map<String, Object> attributes;
 
     public Map<String, Object> getAttributes() {
-        return new HashMap<>(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @EqualsAndHashCode
 public class ImmutableMetadata {
+
     public static final ImmutableMetadata EMPTY = new ImmutableMetadata(Collections.emptyMap());
 
     private final Map<String, Object> metadata;
@@ -28,7 +29,7 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public String getString(final String key) {
-        return getValue(key, String.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -38,7 +39,7 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public Integer getInteger(final String key) {
-        return getValue(key, Integer.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -48,7 +49,7 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public Long getLong(final String key) {
-        return getValue(key, Long.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -58,7 +59,7 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public Float getFloat(final String key) {
-        return getValue(key, Float.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -68,7 +69,7 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public Double getDouble(final String key) {
-        return getValue(key, Double.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -78,51 +79,40 @@ public class ImmutableMetadata {
      * @param key flag metadata key to retrieve
      */
     public Boolean getBoolean(final String key) {
-        return getValue(key, Boolean.class);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Generic value retrieval for the given key.
      */
     public <T> T getValue(final String key, final Class<T> type) {
-        final Object o = metadata.get(key);
-
-        if (o == null) {
-            log.debug("Metadata key " + key + "does not exist");
-            return null;
-        }
-
-        try {
-            return type.cast(o);
-        } catch (ClassCastException e) {
-            log.debug("Error retrieving value for key " + key, e);
-            return null;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Map<String, Object> asUnmodifiableMap() {
-        return Collections.unmodifiableMap(metadata);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean isEmpty() {
-        return metadata.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean isNotEmpty() {
-        return !metadata.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Obtain a builder for {@link ImmutableMetadata}.
      */
     public static ImmutableMetadataBuilder builder() {
-        return new ImmutableMetadataBuilder();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Immutable builder for {@link ImmutableMetadata}.
      */
     public static class ImmutableMetadataBuilder {
+
         private final Map<String, Object> metadata;
 
         private ImmutableMetadataBuilder() {
@@ -136,8 +126,7 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addString(final String key, final String value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -147,8 +136,7 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addInteger(final String key, final Integer value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -158,8 +146,7 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addLong(final String key, final Long value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -169,8 +156,7 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addFloat(final String key, final Float value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -180,8 +166,7 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addDouble(final String key, final Double value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
@@ -191,15 +176,14 @@ public class ImmutableMetadata {
          * @param value flag metadata value to add
          */
         public ImmutableMetadataBuilder addBoolean(final String key, final Boolean value) {
-            metadata.put(key, value);
-            return this;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         /**
          * Retrieve {@link ImmutableMetadata} with provided key,value pairs.
          */
         public ImmutableMetadata build() {
-            return new ImmutableMetadata(this.metadata);
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

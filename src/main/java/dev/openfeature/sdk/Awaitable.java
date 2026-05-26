@@ -12,7 +12,8 @@ public class Awaitable {
 
     private boolean isDone = false;
 
-    public Awaitable() {}
+    public Awaitable() {
+    }
 
     private Awaitable(boolean isDone) {
         this.isDone = isDone;
@@ -25,20 +26,13 @@ public class Awaitable {
      */
     @SuppressWarnings("java:S2142")
     public synchronized void await() {
-        while (!isDone) {
-            try {
-                this.wait();
-            } catch (InterruptedException ignored) {
-                // ignored, do not propagate the interrupted state
-            }
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Wakes up all threads that have called {@link Awaitable#await()} and lets them proceed.
      */
     public synchronized void wakeup() {
-        isDone = true;
-        this.notifyAll();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

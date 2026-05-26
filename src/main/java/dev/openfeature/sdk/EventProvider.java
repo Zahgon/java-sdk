@@ -21,12 +21,13 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public abstract class EventProvider implements FeatureProvider {
+
     private EventProviderListener eventProviderListener;
-    private final ExecutorService emitterExecutor =
-            Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-event-emitter-thread", true));
+
+    private final ExecutorService emitterExecutor = Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-event-emitter-thread", true));
 
     void setEventProviderListener(EventProviderListener eventProviderListener) {
-        this.eventProviderListener = eventProviderListener;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private TriConsumer<EventProvider, ProviderEvent, ProviderEventDetails> onEmit = null;
@@ -39,19 +40,14 @@ public abstract class EventProvider implements FeatureProvider {
      * @throws IllegalStateException if attempted to bind a new emitter for already bound provider
      */
     void attach(TriConsumer<EventProvider, ProviderEvent, ProviderEventDetails> onEmit) {
-        if (this.onEmit != null && this.onEmit != onEmit) {
-            // if we are trying to attach this provider to a different onEmit, something has gone wrong
-            throw new IllegalStateException("Provider " + this.getMetadata().getName() + " is already attached.");
-        } else {
-            this.onEmit = onEmit;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * "Detach" this EventProvider from an SDK, stopping propagation of all events.
      */
     void detach() {
-        this.onEmit = null;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -60,16 +56,7 @@ public abstract class EventProvider implements FeatureProvider {
      */
     @Override
     public void shutdown() {
-        emitterExecutor.shutdown();
-        try {
-            if (!emitterExecutor.awaitTermination(EventSupport.SHUTDOWN_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                log.warn("Emitter executor did not terminate before the timeout period had elapsed");
-                emitterExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            emitterExecutor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -79,31 +66,7 @@ public abstract class EventProvider implements FeatureProvider {
      * @param details The details of the event
      */
     public Awaitable emit(final ProviderEvent event, final ProviderEventDetails details) {
-        final var localEventProviderListener = this.eventProviderListener;
-        final var localOnEmit = this.onEmit;
-
-        if (localEventProviderListener == null && localOnEmit == null) {
-            return Awaitable.FINISHED;
-        }
-
-        final var awaitable = new Awaitable();
-
-        // These calls need to be executed on a different thread to prevent deadlocks when the provider initialization
-        // relies on a ready event to be emitted
-        emitterExecutor.submit(() -> {
-            try (var ignored = OpenFeatureAPI.lock.readLockAutoCloseable()) {
-                if (localEventProviderListener != null) {
-                    localEventProviderListener.onEmit(event, details);
-                }
-                if (localOnEmit != null) {
-                    localOnEmit.accept(this, event, details);
-                }
-            } finally {
-                awaitable.wakeup();
-            }
-        });
-
-        return awaitable;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -113,7 +76,7 @@ public abstract class EventProvider implements FeatureProvider {
      * @param details The details of the event
      */
     public Awaitable emitProviderReady(ProviderEventDetails details) {
-        return emit(ProviderEvent.PROVIDER_READY, details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -124,7 +87,7 @@ public abstract class EventProvider implements FeatureProvider {
      * @param details The details of the event
      */
     public Awaitable emitProviderConfigurationChanged(ProviderEventDetails details) {
-        return emit(ProviderEvent.PROVIDER_CONFIGURATION_CHANGED, details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -134,7 +97,7 @@ public abstract class EventProvider implements FeatureProvider {
      * @param details The details of the event
      */
     public Awaitable emitProviderStale(ProviderEventDetails details) {
-        return emit(ProviderEvent.PROVIDER_STALE, details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -144,6 +107,6 @@ public abstract class EventProvider implements FeatureProvider {
      * @param details The details of the event
      */
     public Awaitable emitProviderError(ProviderEventDetails details) {
-        return emit(ProviderEvent.PROVIDER_ERROR, details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

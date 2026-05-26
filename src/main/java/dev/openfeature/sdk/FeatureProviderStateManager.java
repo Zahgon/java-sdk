@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class FeatureProviderStateManager implements EventProviderListener {
+
     private final FeatureProvider delegate;
+
     private final AtomicBoolean isInitialized = new AtomicBoolean();
+
     private final AtomicReference<ProviderState> state = new AtomicReference<>(ProviderState.NOT_READY);
 
     public FeatureProviderStateManager(FeatureProvider delegate) {
@@ -19,46 +22,16 @@ class FeatureProviderStateManager implements EventProviderListener {
     }
 
     public void initialize(EvaluationContext evaluationContext) throws Exception {
-        if (isInitialized.getAndSet(true)) {
-            return;
-        }
-        try {
-            delegate.initialize(evaluationContext);
-            setState(ProviderState.READY);
-        } catch (OpenFeatureError openFeatureError) {
-            if (ErrorCode.PROVIDER_FATAL.equals(openFeatureError.getErrorCode())) {
-                setState(ProviderState.FATAL);
-            } else {
-                setState(ProviderState.ERROR);
-            }
-            isInitialized.set(false);
-            throw openFeatureError;
-        } catch (Exception e) {
-            setState(ProviderState.ERROR);
-            isInitialized.set(false);
-            throw e;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void shutdown() {
-        delegate.shutdown();
-        setState(ProviderState.NOT_READY);
-        isInitialized.set(false);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public void onEmit(ProviderEvent event, ProviderEventDetails details) {
-        if (ProviderEvent.PROVIDER_ERROR.equals(event)) {
-            if (details != null && details.getErrorCode() == ErrorCode.PROVIDER_FATAL) {
-                setState(ProviderState.FATAL);
-            } else {
-                setState(ProviderState.ERROR);
-            }
-        } else if (ProviderEvent.PROVIDER_STALE.equals(event)) {
-            setState(ProviderState.STALE);
-        } else if (ProviderEvent.PROVIDER_READY.equals(event)) {
-            setState(ProviderState.READY);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private void setState(ProviderState state) {
@@ -75,14 +48,14 @@ class FeatureProviderStateManager implements EventProviderListener {
     }
 
     public ProviderState getState() {
-        return state.get();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     FeatureProvider getProvider() {
-        return delegate;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean hasSameProvider(FeatureProvider featureProvider) {
-        return this.delegate.equals(featureProvider);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

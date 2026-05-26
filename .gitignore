@@ -14,3 +14,8 @@ target
 
 # used for spec compliance tooling
 java-report.json
+
+.aider*
+logs/
+.commit0_scripts/
+.github/workflows/

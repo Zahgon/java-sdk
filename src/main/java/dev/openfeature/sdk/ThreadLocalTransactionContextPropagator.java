@@ -15,7 +15,7 @@ public class ThreadLocalTransactionContextPropagator implements TransactionConte
      */
     @Override
     public EvaluationContext getTransactionContext() {
-        return this.evaluationContextThreadLocal.get();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -23,6 +23,6 @@ public class ThreadLocalTransactionContextPropagator implements TransactionConte
      */
     @Override
     public void setTransactionContext(EvaluationContext evaluationContext) {
-        this.evaluationContextThreadLocal.set(evaluationContext);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

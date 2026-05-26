@@ -19,9 +19,13 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ProviderError {
+
     private String providerName;
+
     private ErrorCode errorCode;
+
     private String errorMessage;
+
     private Exception exception;
 
     /**
@@ -33,7 +37,7 @@ public class ProviderError {
      * @return a new ProviderError
      */
     public static ProviderError fromResult(String providerName, ErrorCode errorCode, String errorMessage) {
-        return new ProviderError(providerName, errorCode, errorMessage, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -44,11 +48,7 @@ public class ProviderError {
      * @return a new ProviderError
      */
     public static ProviderError fromException(String providerName, Exception exception) {
-        ErrorCode code = ErrorCode.GENERAL;
-        if (exception instanceof OpenFeatureError) {
-            code = ((OpenFeatureError) exception).getErrorCode();
-        }
-        return new ProviderError(providerName, code, exception.getMessage(), exception);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -59,12 +59,11 @@ public class ProviderError {
      * @return an aggregate message including per-provider details
      */
     public static String buildAggregateMessage(String baseMessage, List<ProviderError> errors) {
-        String details = errors.stream().map(ProviderError::toString).collect(Collectors.joining(", "));
-        return baseMessage + ". Provider errors: [" + details + "]";
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String toString() {
-        return providerName + ": " + errorCode + " (" + (errorMessage != null ? errorMessage : "unknown") + ")";
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

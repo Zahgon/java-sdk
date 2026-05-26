@@ -10,6 +10,6 @@ public interface BooleanHook extends Hook<Boolean> {
 
     @Override
     default boolean supportsFlagValueType(FlagValueType flagValueType) {
-        return FlagValueType.BOOLEAN == flagValueType;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

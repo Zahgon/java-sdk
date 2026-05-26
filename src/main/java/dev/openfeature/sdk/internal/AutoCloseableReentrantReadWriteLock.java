@@ -14,8 +14,7 @@ public class AutoCloseableReentrantReadWriteLock extends ReentrantReadWriteLock 
      * @return unlock method ref
      */
     public AutoCloseableLock writeLockAutoCloseable() {
-        this.writeLock().lock();
-        return this.writeLock()::unlock;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -24,7 +23,6 @@ public class AutoCloseableReentrantReadWriteLock extends ReentrantReadWriteLock 
      * @return unlock method ref
      */
     public AutoCloseableLock readLockAutoCloseable() {
-        this.readLock().lock();
-        return this.readLock()::unlock;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -9,10 +9,11 @@ import java.util.List;
  * should extend {@link EventProvider}
  */
 public interface FeatureProvider {
+
     Metadata getMetadata();
 
     default List<Hook> getProviderHooks() {
-        return new ArrayList<>();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     ProviderEvaluation<Boolean> getBooleanEvaluation(String key, Boolean defaultValue, EvaluationContext ctx);
@@ -38,7 +39,7 @@ public interface FeatureProvider {
      * </p>
      */
     default void initialize(EvaluationContext evaluationContext) throws Exception {
-        // Intentionally left blank
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -54,7 +55,7 @@ public interface FeatureProvider {
      * </p>
      */
     default void shutdown() {
-        // Intentionally left blank
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -80,5 +81,7 @@ public interface FeatureProvider {
      * @param context   Evaluation context used in flag evaluation (Optional)
      * @param details   Data pertinent to a particular tracking event (Optional)
      */
-    default void track(String eventName, EvaluationContext context, TrackingEventDetails details) {}
+    default void track(String eventName, EvaluationContext context, TrackingEventDetails details) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

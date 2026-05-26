@@ -20,10 +20,7 @@ public class ObjectUtils {
      * @return resulting object
      */
     public static <T> List<T> defaultIfNull(List<T> source, Supplier<List<T>> defaultValue) {
-        if (source == null) {
-            return defaultValue.get();
-        }
-        return source;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -36,10 +33,7 @@ public class ObjectUtils {
      * @return resulting map
      */
     public static <K, V> Map<K, V> defaultIfNull(Map<K, V> source, Supplier<Map<K, V>> defaultValue) {
-        if (source == null) {
-            return defaultValue.get();
-        }
-        return source;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -51,10 +45,7 @@ public class ObjectUtils {
      * @return resulting object
      */
     public static <T> T defaultIfNull(T source, Supplier<T> defaultValue) {
-        if (source == null) {
-            return defaultValue.get();
-        }
-        return source;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -66,10 +57,6 @@ public class ObjectUtils {
      */
     @SafeVarargs
     public static <T> List<T> merge(Collection<T>... sources) {
-        List<T> merged = new ArrayList<>();
-        for (Collection<T> source : sources) {
-            merged.addAll(source);
-        }
-        return merged;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

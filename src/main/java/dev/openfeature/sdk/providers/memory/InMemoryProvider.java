@@ -40,7 +40,7 @@ public class InMemoryProvider extends EventProvider {
 
     @Override
     public Metadata getMetadata() {
-        return () -> NAME;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public InMemoryProvider(Map<String, Flag<?>> flags) {
@@ -55,9 +55,7 @@ public class InMemoryProvider extends EventProvider {
      */
     @Override
     public void initialize(EvaluationContext evaluationContext) throws Exception {
-        super.initialize(evaluationContext);
-        state = ProviderState.READY;
-        log.debug("finished initializing provider, state: {}", state);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -68,14 +66,7 @@ public class InMemoryProvider extends EventProvider {
      * @param newFlags the new flag configurations
      */
     public void updateFlags(Map<String, Flag<?>> newFlags) {
-        Set<String> flagsChanged = new HashSet<>(newFlags.keySet());
-        this.flags.putAll(newFlags);
-
-        ProviderEventDetails details = ProviderEventDetails.builder()
-                .flagsChanged(new ArrayList<>(flagsChanged))
-                .message("flags changed")
-                .build();
-        emitProviderConfigurationChanged(details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -86,48 +77,36 @@ public class InMemoryProvider extends EventProvider {
      * @param newFlag the flag to update
      */
     public void updateFlag(String flagKey, Flag<?> newFlag) {
-        this.flags.put(flagKey, newFlag);
-        ProviderEventDetails details = ProviderEventDetails.builder()
-                .flagsChanged(Collections.singletonList(flagKey))
-                .message("flag added/updated")
-                .build();
-        emitProviderConfigurationChanged(details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public ProviderEvaluation<Boolean> getBooleanEvaluation(
-            String key, Boolean defaultValue, EvaluationContext evaluationContext) {
-        return getEvaluation(key, defaultValue, evaluationContext, Boolean.class);
+    public ProviderEvaluation<Boolean> getBooleanEvaluation(String key, Boolean defaultValue, EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public ProviderEvaluation<String> getStringEvaluation(
-            String key, String defaultValue, EvaluationContext evaluationContext) {
-        return getEvaluation(key, defaultValue, evaluationContext, String.class);
+    public ProviderEvaluation<String> getStringEvaluation(String key, String defaultValue, EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public ProviderEvaluation<Integer> getIntegerEvaluation(
-            String key, Integer defaultValue, EvaluationContext evaluationContext) {
-        return getEvaluation(key, defaultValue, evaluationContext, Integer.class);
+    public ProviderEvaluation<Integer> getIntegerEvaluation(String key, Integer defaultValue, EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public ProviderEvaluation<Double> getDoubleEvaluation(
-            String key, Double defaultValue, EvaluationContext evaluationContext) {
-        return getEvaluation(key, defaultValue, evaluationContext, Double.class);
+    public ProviderEvaluation<Double> getDoubleEvaluation(String key, Double defaultValue, EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SneakyThrows
     @Override
-    public ProviderEvaluation<Value> getObjectEvaluation(
-            String key, Value defaultValue, EvaluationContext evaluationContext) {
-        return getEvaluation(key, defaultValue, evaluationContext, Value.class);
+    public ProviderEvaluation<Value> getObjectEvaluation(String key, Value defaultValue, EvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    private <T> ProviderEvaluation<T> getEvaluation(
-            String key, T defaultValue, EvaluationContext evaluationContext, Class<?> expectedType)
-            throws OpenFeatureError {
+    private <T> ProviderEvaluation<T> getEvaluation(String key, T defaultValue, EvaluationContext evaluationContext, Class<?> expectedType) throws OpenFeatureError {
         if (!ProviderState.READY.equals(state)) {
             if (ProviderState.NOT_READY.equals(state)) {
                 throw new ProviderNotReadyError("provider not yet initialized");
@@ -142,11 +121,7 @@ public class InMemoryProvider extends EventProvider {
             throw new FlagNotFoundError("flag " + key + " not found");
         }
         if (flag.isDisabled()) {
-            return ProviderEvaluation.<T>builder()
-                    .reason(Reason.DISABLED.name())
-                    .value(defaultValue)
-                    .flagMetadata(flag.getFlagMetadata())
-                    .build();
+            return ProviderEvaluation.<T>builder().reason(Reason.DISABLED.name()).value(defaultValue).flagMetadata(flag.getFlagMetadata()).build();
         }
         T value;
         Reason reason = Reason.STATIC;
@@ -166,11 +141,6 @@ public class InMemoryProvider extends EventProvider {
         } else {
             value = (T) flag.getVariants().get(flag.getDefaultVariant());
         }
-        return ProviderEvaluation.<T>builder()
-                .value(value)
-                .variant(flag.getDefaultVariant())
-                .reason(reason.toString())
-                .flagMetadata(flag.getFlagMetadata())
-                .build();
+        return ProviderEvaluation.<T>builder().value(value).variant(flag.getDefaultVariant()).reason(reason.toString()).flagMetadata(flag.getFlagMetadata()).build();
     }
 }

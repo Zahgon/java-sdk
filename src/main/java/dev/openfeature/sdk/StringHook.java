@@ -10,6 +10,6 @@ public interface StringHook extends Hook<String> {
 
     @Override
     default boolean supportsFlagValueType(FlagValueType flagValueType) {
-        return FlagValueType.STRING == flagValueType;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

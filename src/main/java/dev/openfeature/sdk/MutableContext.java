@@ -50,38 +50,31 @@ public class MutableContext implements EvaluationContext {
 
     // override @Delegate methods so that we can use "add" methods and still return MutableContext, not Structure
     public MutableContext add(String key, Boolean value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, String value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, Integer value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, Double value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, Instant value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, Structure value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public MutableContext add(String key, List<Value> value) {
-        this.structure.add(key, value);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -89,10 +82,7 @@ public class MutableContext implements EvaluationContext {
      * Empty string is a valid targeting key value.
      */
     public MutableContext setTargetingKey(String targetingKey) {
-        if (targetingKey != null) {
-            this.add(TARGETING_KEY, targetingKey);
-        }
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -100,8 +90,7 @@ public class MutableContext implements EvaluationContext {
      */
     @Override
     public String getTargetingKey() {
-        Value value = this.getValue(TARGETING_KEY);
-        return value == null ? null : value.asString();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -112,16 +101,7 @@ public class MutableContext implements EvaluationContext {
      */
     @Override
     public EvaluationContext merge(EvaluationContext overridingContext) {
-        if (overridingContext == null || overridingContext.isEmpty()) {
-            return this;
-        }
-        if (this.isEmpty()) {
-            return overridingContext;
-        }
-
-        Map<String, Value> attributes = this.asMap();
-        EvaluationContext.mergeMaps(MutableStructure::new, attributes, overridingContext.asUnmodifiableMap());
-        return new MutableContext(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -134,12 +114,12 @@ public class MutableContext implements EvaluationContext {
      */
     @Override
     public boolean equals(Object o) {
-        return isEqualTo(o);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public int hashCode() {
-        return structure.hashCode();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -149,44 +129,40 @@ public class MutableContext implements EvaluationContext {
     private static class DelegateExclusions {
 
         @ExcludeFromGeneratedCoverageReport
-        public <T extends Structure> Map<String, Value> merge(
-                Function<Map<String, Value>, Structure> newStructure,
-                Map<String, Value> base,
-                Map<String, Value> overriding) {
-
-            return null;
+        public <T extends Structure> Map<String, Value> merge(Function<Map<String, Value>, Structure> newStructure, Map<String, Value> base, Map<String, Value> overriding) {
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Boolean ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Double ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, String ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Value ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Integer ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, List<Value> ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Structure ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
 
         public MutableStructure add(String ignoredKey, Instant ignoredValue) {
-            return null;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }

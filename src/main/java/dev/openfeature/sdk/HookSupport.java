@@ -22,13 +22,7 @@ class HookSupport {
      * @param type            the flag value type to filter unsupported hooks
      */
     public void setHooks(HookSupportData hookSupportData, List<Hook> hooks, FlagValueType type) {
-        List<Pair<Hook, HookContext>> hookContextPairs = new ArrayList<>();
-        for (Hook hook : hooks) {
-            if (hook.supportsFlagValueType(type)) {
-                hookContextPairs.add(Pair.of(hook, null));
-            }
-        }
-        hookSupportData.hooks = hookContextPairs;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -38,77 +32,24 @@ class HookSupport {
      * @param hookSupportData the data object to modify
      * @param sharedContext   the shared context from which the new {@link HookContext} is created
      */
-    public void setHookContexts(
-            HookSupportData hookSupportData,
-            SharedHookContext sharedContext,
-            LayeredEvaluationContext evaluationContext) {
-        for (int i = 0; i < hookSupportData.hooks.size(); i++) {
-            Pair<Hook, HookContext> hookContextPair = hookSupportData.hooks.get(i);
-            HookContext curHookContext = sharedContext.hookContextFor(evaluationContext, new DefaultHookData());
-            hookContextPair.setValue(curHookContext);
-        }
+    public void setHookContexts(HookSupportData hookSupportData, SharedHookContext sharedContext, LayeredEvaluationContext evaluationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void executeBeforeHooks(HookSupportData data) {
-        // These traverse backwards from normal.
-        List<Pair<Hook, HookContext>> reversedHooks = new ArrayList<>(data.getHooks());
-        Collections.reverse(reversedHooks);
-
-        for (Pair<Hook, HookContext> hookContextPair : reversedHooks) {
-            var hook = hookContextPair.getKey();
-            var hookContext = hookContextPair.getValue();
-
-            Optional<EvaluationContext> returnedEvalContext = Optional.ofNullable(
-                            hook.before(hookContext, data.getHints()))
-                    .orElse(Optional.empty());
-            if (returnedEvalContext.isPresent()) {
-                var returnedContext = returnedEvalContext.get();
-                // yes, we want to check for reference equality here, this prevents recursive layered contexts
-                if (returnedContext != hookContext.getCtx() && !returnedContext.isEmpty()) {
-                    data.evaluationContext.putHookContext(returnedContext);
-                }
-            }
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void executeErrorHooks(HookSupportData data, Exception error) {
-        for (Pair<Hook, HookContext> hookContextPair : data.getHooks()) {
-            var hook = hookContextPair.getKey();
-            var hookContext = hookContextPair.getValue();
-            try {
-                hook.error(hookContext, error, data.getHints());
-            } catch (Exception e) {
-                log.error(
-                        "Unhandled exception when running {} hook {} (only 'after' hooks should throw)",
-                        "error",
-                        hook.getClass(),
-                        e);
-            }
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     // after hooks can throw in order to do validation
     public <T> void executeAfterHooks(HookSupportData data, FlagEvaluationDetails<T> details) {
-        for (Pair<Hook, HookContext> hookContextPair : data.getHooks()) {
-            var hook = hookContextPair.getKey();
-            var hookContext = hookContextPair.getValue();
-            hook.after(hookContext, details, data.getHints());
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public <T> void executeAfterAllHooks(HookSupportData data, FlagEvaluationDetails<T> details) {
-        for (Pair<Hook, HookContext> hookContextPair : data.getHooks()) {
-            var hook = hookContextPair.getKey();
-            var hookContext = hookContextPair.getValue();
-            try {
-                hook.finallyAfter(hookContext, details, data.getHints());
-            } catch (Exception e) {
-                log.error(
-                        "Unhandled exception when running {} hook {} (only 'after' hooks should throw)",
-                        "finally",
-                        hook.getClass(),
-                        e);
-            }
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

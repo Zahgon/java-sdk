@@ -36,17 +36,7 @@ public interface EvaluationContext extends Structure {
      * @return true if the other object is an EvaluationContext and has the same map representation, false otherwise
      */
     default boolean isEqualTo(Object other) {
-        if (other == null) {
-            return false;
-        }
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof EvaluationContext)) {
-            return false;
-        }
-        var otherContext = (EvaluationContext) other;
-        return asUnmodifiableMap().equals(otherContext.asUnmodifiableMap());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -58,31 +48,7 @@ public interface EvaluationContext extends Structure {
      * @param base         base map to merge
      * @param overriding   overriding map to merge
      */
-    static void mergeMaps(
-            Function<Map<String, Value>, Structure> newStructure,
-            Map<String, Value> base,
-            Map<String, Value> overriding) {
-
-        if (base == null) {
-            return;
-        }
-        if (overriding == null || overriding.isEmpty()) {
-            return;
-        }
-
-        for (Entry<String, Value> overridingEntry : overriding.entrySet()) {
-            String key = overridingEntry.getKey();
-            if (overridingEntry.getValue().isStructure()
-                    && base.containsKey(key)
-                    && base.get(key).isStructure()) {
-                Structure mergedValue = base.get(key).asStructure();
-                Structure overridingValue = overridingEntry.getValue().asStructure();
-                Map<String, Value> newMap = mergedValue.asMap();
-                mergeMaps(newStructure, newMap, overridingValue.asUnmodifiableMap());
-                base.put(key, new Value(newStructure.apply(newMap)));
-            } else {
-                base.put(key, overridingEntry.getValue());
-            }
-        }
+    static void mergeMaps(Function<Map<String, Value>, Structure> newStructure, Map<String, Value> base, Map<String, Value> overriding) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

@@ -18,10 +18,15 @@ import lombok.NoArgsConstructor;
 public class FlagEvaluationDetails<T> implements BaseEvaluation<T> {
 
     private String flagKey;
+
     private T value;
+
     private String variant;
+
     private String reason;
+
     private ErrorCode errorCode;
+
     private String errorMessage;
 
     @Builder.Default
@@ -36,18 +41,6 @@ public class FlagEvaluationDetails<T> implements BaseEvaluation<T> {
      * @return detail payload
      */
     public static <T> FlagEvaluationDetails<T> from(ProviderEvaluation<T> providerEval, String flagKey) {
-        var flagMetadata = providerEval.getFlagMetadata();
-        if (flagMetadata == null) {
-            flagMetadata = ImmutableMetadata.EMPTY;
-        }
-
-        return new FlagEvaluationDetails<>(
-                flagKey,
-                providerEval.getValue(),
-                providerEval.getVariant(),
-                providerEval.getReason(),
-                providerEval.getErrorCode(),
-                providerEval.getErrorMessage(),
-                flagMetadata);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

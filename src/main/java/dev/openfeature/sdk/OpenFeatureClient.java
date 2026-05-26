@@ -29,14 +29,9 @@ import lombok.extern.slf4j.Slf4j;
  * @deprecated // TODO: eventually we will make this non-public. See issue #872
  */
 @Slf4j
-@SuppressWarnings({
-    "PMD.DataflowAnomalyAnalysis",
-    "PMD.BeanMembersShouldSerialize",
-    "PMD.UnusedLocalVariable",
-    "unchecked",
-    "rawtypes"
-})
-@Deprecated() // TODO: eventually we will make this non-public. See issue #872
+@SuppressWarnings({ "PMD.DataflowAnomalyAnalysis", "PMD.BeanMembersShouldSerialize", "PMD.UnusedLocalVariable", "unchecked", "rawtypes" })
+// TODO: eventually we will make this non-public. See issue #872
+@Deprecated()
 public class OpenFeatureClient implements Client {
 
     private final OpenFeatureAPI openfeatureApi;
@@ -48,6 +43,7 @@ public class OpenFeatureClient implements Client {
     private final String version;
 
     private final ConcurrentLinkedQueue<Hook> clientHooks;
+
     private final AtomicReference<EvaluationContext> evaluationContext = new AtomicReference<>();
 
     private final HookSupport hookSupport;
@@ -63,7 +59,8 @@ public class OpenFeatureClient implements Client {
      *         Clients created using it will not run event handlers.
      *         Use the OpenFeatureAPI's getClient factory method instead.
      */
-    @Deprecated() // TODO: eventually we will make this non-public. See issue #872
+    // TODO: eventually we will make this non-public. See issue #872
+    @Deprecated()
     public OpenFeatureClient(OpenFeatureAPI openFeatureAPI, String domain, String version) {
         this.openfeatureApi = openFeatureAPI;
         this.domain = domain;
@@ -77,7 +74,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public ProviderState getProviderState() {
-        return openfeatureApi.getFeatureProviderStateManager(domain).getState();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -85,8 +82,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public void track(String trackingEventName) {
-        validateTrackingEventName(trackingEventName);
-        invokeTrack(trackingEventName, null, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -94,9 +90,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public void track(String trackingEventName, EvaluationContext context) {
-        validateTrackingEventName(trackingEventName);
-        Objects.requireNonNull(context);
-        invokeTrack(trackingEventName, context, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -104,9 +98,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public void track(String trackingEventName, TrackingEventDetails details) {
-        validateTrackingEventName(trackingEventName);
-        Objects.requireNonNull(details);
-        invokeTrack(trackingEventName, null, details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -114,10 +106,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public void track(String trackingEventName, EvaluationContext context, TrackingEventDetails details) {
-        validateTrackingEventName(trackingEventName);
-        Objects.requireNonNull(context);
-        Objects.requireNonNull(details);
-        invokeTrack(trackingEventName, mergeEvaluationContext(context), details);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -125,8 +114,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public OpenFeatureClient addHooks(Hook... hooks) {
-        this.clientHooks.addAll(Arrays.asList(hooks));
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -134,7 +122,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public List<Hook> getHooks() {
-        return new ArrayList<>(this.clientHooks);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -142,8 +130,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public OpenFeatureClient setEvaluationContext(EvaluationContext evaluationContext) {
-        this.evaluationContext.set(evaluationContext);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -151,50 +138,33 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public EvaluationContext getEvaluationContext() {
-        return this.evaluationContext.get();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    @SuppressFBWarnings(
-            value = {"REC_CATCH_EXCEPTION"},
-            justification = "We don't want to allow any exception to reach the user. "
-                    + "Instead, we return an evaluation result with the appropriate error code.")
-    private <T> FlagEvaluationDetails<T> evaluateFlag(
-            FlagValueType type, String key, T defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+    @SuppressFBWarnings(value = { "REC_CATCH_EXCEPTION" }, justification = "We don't want to allow any exception to reach the user. " + "Instead, we return an evaluation result with the appropriate error code.")
+    private <T> FlagEvaluationDetails<T> evaluateFlag(FlagValueType type, String key, T defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
         FlagEvaluationDetails<T> details = null;
         HookSupportData hookSupportData = new HookSupportData();
-
         FlagEvaluationOptions flagOptions;
         if (options == null) {
             flagOptions = FlagEvaluationOptions.EMPTY;
         } else {
             flagOptions = options;
         }
-
         hookSupportData.hints = Collections.unmodifiableMap(flagOptions.getHookHints());
-        var context = new LayeredEvaluationContext(
-                openfeatureApi.getEvaluationContext(),
-                openfeatureApi.getTransactionContext(),
-                evaluationContext.get(),
-                ctx);
+        var context = new LayeredEvaluationContext(openfeatureApi.getEvaluationContext(), openfeatureApi.getTransactionContext(), evaluationContext.get(), ctx);
         hookSupportData.evaluationContext = context;
-
         try {
             final var stateManager = openfeatureApi.getFeatureProviderStateManager(this.domain);
             // provider must be accessed once to maintain a consistent reference
             final var provider = stateManager.getProvider();
             final var state = stateManager.getState();
-
             // Hooks are initialized as early as possible to enable the execution of error stages
-            var mergedHooks = ObjectUtils.merge(
-                    provider.getProviderHooks(), flagOptions.getHooks(), clientHooks, openfeatureApi.getMutableHooks());
+            var mergedHooks = ObjectUtils.merge(provider.getProviderHooks(), flagOptions.getHooks(), clientHooks, openfeatureApi.getMutableHooks());
             hookSupport.setHooks(hookSupportData, mergedHooks, type);
-
-            var sharedHookContext =
-                    new SharedHookContext(key, type, this.getMetadata(), provider.getMetadata(), defaultValue);
+            var sharedHookContext = new SharedHookContext(key, type, this.getMetadata(), provider.getMetadata(), defaultValue);
             hookSupport.setHookContexts(hookSupportData, sharedHookContext, context);
-
             hookSupport.executeBeforeHooks(hookSupportData);
-
             // "short circuit" if the provider is in NOT_READY or FATAL state
             if (ProviderState.NOT_READY.equals(state)) {
                 throw new ProviderNotReadyError("Provider not yet initialized");
@@ -202,14 +172,10 @@ public class OpenFeatureClient implements Client {
             if (ProviderState.FATAL.equals(state)) {
                 throw new FatalError("Provider is in an irrecoverable error state");
             }
-
-            var providerEval = (ProviderEvaluation<T>)
-                    createProviderEvaluation(type, key, defaultValue, provider, hookSupportData.getEvaluationContext());
-
+            var providerEval = (ProviderEvaluation<T>) createProviderEvaluation(type, key, defaultValue, provider, hookSupportData.getEvaluationContext());
             details = FlagEvaluationDetails.from(providerEval, key);
             if (details.getErrorCode() != null) {
-                var error =
-                        ExceptionUtils.instantiateErrorByErrorCode(details.getErrorCode(), details.getErrorMessage());
+                var error = ExceptionUtils.instantiateErrorByErrorCode(details.getErrorCode(), details.getErrorMessage());
                 enrichDetailsWithErrorDefaults(defaultValue, details);
                 hookSupport.executeErrorHooks(hookSupportData, error);
             } else {
@@ -234,7 +200,6 @@ public class OpenFeatureClient implements Client {
                 hookSupport.executeAfterAllHooks(hookSupportData, details);
             }
         }
-
         return details;
     }
 
@@ -251,10 +216,7 @@ public class OpenFeatureClient implements Client {
     }
 
     private void invokeTrack(String trackingEventName, EvaluationContext context, TrackingEventDetails details) {
-        openfeatureApi
-                .getFeatureProviderStateManager(domain)
-                .getProvider()
-                .track(trackingEventName, mergeEvaluationContext(context), details);
+        openfeatureApi.getFeatureProviderStateManager(domain).getProvider().track(trackingEventName, mergeEvaluationContext(context), details);
     }
 
     /**
@@ -283,13 +245,8 @@ public class OpenFeatureClient implements Client {
         return new ImmutableContext(merged);
     }
 
-    private <T> ProviderEvaluation<?> createProviderEvaluation(
-            FlagValueType type,
-            String key,
-            T defaultValue,
-            FeatureProvider provider,
-            EvaluationContext invocationContext) {
-        switch (type) {
+    private <T> ProviderEvaluation<?> createProviderEvaluation(FlagValueType type, String key, T defaultValue, FeatureProvider provider, EvaluationContext invocationContext) {
+        switch(type) {
             case BOOLEAN:
                 return provider.getBooleanEvaluation(key, (Boolean) defaultValue, invocationContext);
             case STRING:
@@ -307,167 +264,157 @@ public class OpenFeatureClient implements Client {
 
     @Override
     public Boolean getBooleanValue(String key, Boolean defaultValue) {
-        return getBooleanDetails(key, defaultValue).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Boolean getBooleanValue(String key, Boolean defaultValue, EvaluationContext ctx) {
-        return getBooleanDetails(key, defaultValue, ctx).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public Boolean getBooleanValue(
-            String key, Boolean defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return getBooleanDetails(key, defaultValue, ctx, options).getValue();
+    public Boolean getBooleanValue(String key, Boolean defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Boolean> getBooleanDetails(String key, Boolean defaultValue) {
-        return getBooleanDetails(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Boolean> getBooleanDetails(String key, Boolean defaultValue, EvaluationContext ctx) {
-        return getBooleanDetails(key, defaultValue, ctx, FlagEvaluationOptions.EMPTY);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public FlagEvaluationDetails<Boolean> getBooleanDetails(
-            String key, Boolean defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.BOOLEAN, key, defaultValue, ctx, options);
+    public FlagEvaluationDetails<Boolean> getBooleanDetails(String key, Boolean defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String getStringValue(String key, String defaultValue) {
-        return getStringDetails(key, defaultValue).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String getStringValue(String key, String defaultValue, EvaluationContext ctx) {
-        return getStringDetails(key, defaultValue, ctx).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public String getStringValue(
-            String key, String defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return getStringDetails(key, defaultValue, ctx, options).getValue();
+    public String getStringValue(String key, String defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<String> getStringDetails(String key, String defaultValue) {
-        return getStringDetails(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<String> getStringDetails(String key, String defaultValue, EvaluationContext ctx) {
-        return getStringDetails(key, defaultValue, ctx, FlagEvaluationOptions.EMPTY);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public FlagEvaluationDetails<String> getStringDetails(
-            String key, String defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.STRING, key, defaultValue, ctx, options);
+    public FlagEvaluationDetails<String> getStringDetails(String key, String defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Integer getIntegerValue(String key, Integer defaultValue) {
-        return getIntegerDetails(key, defaultValue).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Integer getIntegerValue(String key, Integer defaultValue, EvaluationContext ctx) {
-        return getIntegerDetails(key, defaultValue, ctx).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public Integer getIntegerValue(
-            String key, Integer defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return getIntegerDetails(key, defaultValue, ctx, options).getValue();
+    public Integer getIntegerValue(String key, Integer defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Integer> getIntegerDetails(String key, Integer defaultValue) {
-        return getIntegerDetails(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Integer> getIntegerDetails(String key, Integer defaultValue, EvaluationContext ctx) {
-        return getIntegerDetails(key, defaultValue, ctx, FlagEvaluationOptions.EMPTY);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public FlagEvaluationDetails<Integer> getIntegerDetails(
-            String key, Integer defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.INTEGER, key, defaultValue, ctx, options);
+    public FlagEvaluationDetails<Integer> getIntegerDetails(String key, Integer defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Double getDoubleValue(String key, Double defaultValue) {
-        return getDoubleValue(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Double getDoubleValue(String key, Double defaultValue, EvaluationContext ctx) {
-        return getDoubleValue(key, defaultValue, ctx, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public Double getDoubleValue(
-            String key, Double defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.DOUBLE, key, defaultValue, ctx, options)
-                .getValue();
+    public Double getDoubleValue(String key, Double defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Double> getDoubleDetails(String key, Double defaultValue) {
-        return getDoubleDetails(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Double> getDoubleDetails(String key, Double defaultValue, EvaluationContext ctx) {
-        return getDoubleDetails(key, defaultValue, ctx, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public FlagEvaluationDetails<Double> getDoubleDetails(
-            String key, Double defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.DOUBLE, key, defaultValue, ctx, options);
+    public FlagEvaluationDetails<Double> getDoubleDetails(String key, Double defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Value getObjectValue(String key, Value defaultValue) {
-        return getObjectDetails(key, defaultValue).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Value getObjectValue(String key, Value defaultValue, EvaluationContext ctx) {
-        return getObjectDetails(key, defaultValue, ctx).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Value getObjectValue(String key, Value defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return getObjectDetails(key, defaultValue, ctx, options).getValue();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Value> getObjectDetails(String key, Value defaultValue) {
-        return getObjectDetails(key, defaultValue, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public FlagEvaluationDetails<Value> getObjectDetails(String key, Value defaultValue, EvaluationContext ctx) {
-        return getObjectDetails(key, defaultValue, ctx, FlagEvaluationOptions.EMPTY);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
-    public FlagEvaluationDetails<Value> getObjectDetails(
-            String key, Value defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
-        return this.evaluateFlag(FlagValueType.OBJECT, key, defaultValue, ctx, options);
+    public FlagEvaluationDetails<Value> getObjectDetails(String key, Value defaultValue, EvaluationContext ctx, FlagEvaluationOptions options) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public ClientMetadata getMetadata() {
-        return this::getDomain;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -475,7 +422,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client onProviderReady(Consumer<EventDetails> handler) {
-        return on(ProviderEvent.PROVIDER_READY, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -483,7 +430,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client onProviderConfigurationChanged(Consumer<EventDetails> handler) {
-        return on(ProviderEvent.PROVIDER_CONFIGURATION_CHANGED, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -491,7 +438,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client onProviderError(Consumer<EventDetails> handler) {
-        return on(ProviderEvent.PROVIDER_ERROR, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -499,7 +446,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client onProviderStale(Consumer<EventDetails> handler) {
-        return on(ProviderEvent.PROVIDER_STALE, handler);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -507,8 +454,7 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client on(ProviderEvent event, Consumer<EventDetails> handler) {
-        openfeatureApi.addHandler(domain, event, handler);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -516,7 +462,6 @@ public class OpenFeatureClient implements Client {
      */
     @Override
     public Client removeHandler(ProviderEvent event, Consumer<EventDetails> handler) {
-        openfeatureApi.removeHandler(domain, event, handler);
-        return this;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

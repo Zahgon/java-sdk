@@ -11,21 +11,16 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder(toBuilder = true)
 public class EventDetails extends ProviderEventDetails {
+
     private String domain;
+
     private String providerName;
 
     static EventDetails fromProviderEventDetails(ProviderEventDetails providerEventDetails, String providerName) {
-        return fromProviderEventDetails(providerEventDetails, providerName, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    static EventDetails fromProviderEventDetails(
-            ProviderEventDetails providerEventDetails, String providerName, String domain) {
-        return builder()
-                .domain(domain)
-                .providerName(providerName)
-                .flagsChanged(providerEventDetails.getFlagsChanged())
-                .eventMetadata(providerEventDetails.getEventMetadata())
-                .message(providerEventDetails.getMessage())
-                .build();
+    static EventDetails fromProviderEventDetails(ProviderEventDetails providerEventDetails, String providerName, String domain) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

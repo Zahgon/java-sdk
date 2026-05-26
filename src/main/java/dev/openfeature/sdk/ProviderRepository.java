@@ -23,12 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 class ProviderRepository {
 
     private final Map<String, FeatureProviderStateManager> stateManagers = new ConcurrentHashMap<>();
-    private final AtomicReference<FeatureProviderStateManager> defaultStateManger =
-            new AtomicReference<>(new FeatureProviderStateManager(new NoOpProvider()));
+
+    private final AtomicReference<FeatureProviderStateManager> defaultStateManger = new AtomicReference<>(new FeatureProviderStateManager(new NoOpProvider()));
+
     private final AtomicBoolean isShuttingDown = new AtomicBoolean(false);
-    private final ExecutorService taskExecutor =
-            Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-provider-thread", true));
+
+    private final ExecutorService taskExecutor = Executors.newCachedThreadPool(new ConfigurableThreadFactory("openfeature-provider-thread", true));
+
     private final Object registerStateManagerLock = new Object();
+
     private final OpenFeatureAPI openFeatureAPI;
 
     public ProviderRepository(OpenFeatureAPI openFeatureAPI) {
@@ -36,26 +39,18 @@ class ProviderRepository {
     }
 
     FeatureProviderStateManager getFeatureProviderStateManager() {
-        return defaultStateManger.get();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     FeatureProviderStateManager getFeatureProviderStateManager(String domain) {
-        if (domain == null) {
-            return defaultStateManger.get();
-        }
-        FeatureProviderStateManager fromMap = this.stateManagers.get(domain);
-        if (fromMap == null) {
-            return this.defaultStateManger.get();
-        } else {
-            return fromMap;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Return the default provider.
      */
     public FeatureProvider getProvider() {
-        return defaultStateManger.get().getProvider();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -65,67 +60,38 @@ class ProviderRepository {
      * @return A named {@link FeatureProvider}
      */
     public FeatureProvider getProvider(String domain) {
-        return getFeatureProviderStateManager(domain).getProvider();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ProviderState getProviderState() {
-        return getFeatureProviderStateManager().getState();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ProviderState getProviderState(FeatureProvider featureProvider) {
-        if (featureProvider instanceof FeatureProviderStateManager) {
-            return ((FeatureProviderStateManager) featureProvider).getState();
-        }
-
-        FeatureProviderStateManager defaultProvider = this.defaultStateManger.get();
-        if (defaultProvider.hasSameProvider(featureProvider)) {
-            return defaultProvider.getState();
-        }
-
-        for (FeatureProviderStateManager wrapper : stateManagers.values()) {
-            if (wrapper.hasSameProvider(featureProvider)) {
-                return wrapper.getState();
-            }
-        }
-        return null;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public ProviderState getProviderState(String domain) {
-        return Optional.ofNullable(domain)
-                .map(this.stateManagers::get)
-                .orElse(this.defaultStateManger.get())
-                .getState();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public List<String> getDomainsForProvider(FeatureProvider provider) {
-        return stateManagers.entrySet().stream()
-                .filter(entry -> entry.getValue().hasSameProvider(provider))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Set<String> getAllBoundDomains() {
-        return stateManagers.keySet();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean isDefaultProvider(FeatureProvider provider) {
-        return this.getProvider().equals(provider);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Set the default provider.
      */
-    public void setProvider(
-            FeatureProvider provider,
-            Consumer<FeatureProvider> afterSet,
-            Consumer<FeatureProvider> afterInit,
-            Consumer<FeatureProvider> afterShutdown,
-            BiConsumer<FeatureProvider, OpenFeatureError> afterError,
-            boolean waitForInit) {
-        if (provider == null) {
-            throw new IllegalArgumentException("Provider cannot be null");
-        }
-        prepareAndInitializeProvider(null, provider, afterSet, afterInit, afterShutdown, afterError, waitForInit);
+    public void setProvider(FeatureProvider provider, Consumer<FeatureProvider> afterSet, Consumer<FeatureProvider> afterInit, Consumer<FeatureProvider> afterShutdown, BiConsumer<FeatureProvider, OpenFeatureError> afterError, boolean waitForInit) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -136,34 +102,13 @@ class ProviderRepository {
      * @param waitForInit When true, wait for initialization to finish, then returns.
      *                    Otherwise, initialization happens in the background.
      */
-    public void setProvider(
-            String domain,
-            FeatureProvider provider,
-            Consumer<FeatureProvider> afterSet,
-            Consumer<FeatureProvider> afterInit,
-            Consumer<FeatureProvider> afterShutdown,
-            BiConsumer<FeatureProvider, OpenFeatureError> afterError,
-            boolean waitForInit) {
-        if (provider == null) {
-            throw new IllegalArgumentException("Provider cannot be null");
-        }
-        if (domain == null) {
-            throw new IllegalArgumentException("domain cannot be null");
-        }
-        prepareAndInitializeProvider(domain, provider, afterSet, afterInit, afterShutdown, afterError, waitForInit);
+    public void setProvider(String domain, FeatureProvider provider, Consumer<FeatureProvider> afterSet, Consumer<FeatureProvider> afterInit, Consumer<FeatureProvider> afterShutdown, BiConsumer<FeatureProvider, OpenFeatureError> afterError, boolean waitForInit) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    private void prepareAndInitializeProvider(
-            String domain,
-            FeatureProvider newProvider,
-            Consumer<FeatureProvider> afterSet,
-            Consumer<FeatureProvider> afterInit,
-            Consumer<FeatureProvider> afterShutdown,
-            BiConsumer<FeatureProvider, OpenFeatureError> afterError,
-            boolean waitForInit) {
+    private void prepareAndInitializeProvider(String domain, FeatureProvider newProvider, Consumer<FeatureProvider> afterSet, Consumer<FeatureProvider> afterInit, Consumer<FeatureProvider> afterShutdown, BiConsumer<FeatureProvider, OpenFeatureError> afterError, boolean waitForInit) {
         final FeatureProviderStateManager newStateManager;
         final FeatureProviderStateManager oldStateManager;
-
         synchronized (registerStateManagerLock) {
             if (isShuttingDown.get()) {
                 throw new IllegalStateException("Provider cannot be set while repository is shutting down");
@@ -176,13 +121,9 @@ class ProviderRepository {
             } else {
                 newStateManager = existing;
             }
-
             // provider is set immediately, on this thread
-            oldStateManager = domain != null
-                    ? this.stateManagers.put(domain, newStateManager)
-                    : this.defaultStateManger.getAndSet(newStateManager);
+            oldStateManager = domain != null ? this.stateManagers.put(domain, newStateManager) : this.defaultStateManger.getAndSet(newStateManager);
         }
-
         if (waitForInit) {
             initializeProvider(newStateManager, afterInit, afterShutdown, afterError, oldStateManager);
         } else {
@@ -206,12 +147,7 @@ class ProviderRepository {
         return null;
     }
 
-    private void initializeProvider(
-            FeatureProviderStateManager newManager,
-            Consumer<FeatureProvider> afterInit,
-            Consumer<FeatureProvider> afterShutdown,
-            BiConsumer<FeatureProvider, OpenFeatureError> afterError,
-            FeatureProviderStateManager oldManager) {
+    private void initializeProvider(FeatureProviderStateManager newManager, Consumer<FeatureProvider> afterInit, Consumer<FeatureProvider> afterShutdown, BiConsumer<FeatureProvider, OpenFeatureError> afterError, FeatureProviderStateManager oldManager) {
         try {
             if (ProviderState.NOT_READY.equals(newManager.getState())) {
                 newManager.initialize(openFeatureAPI.getEvaluationContext());
@@ -219,16 +155,10 @@ class ProviderRepository {
             }
             shutDownOld(oldManager, afterShutdown);
         } catch (OpenFeatureError e) {
-            log.error(
-                    "Exception when initializing feature provider {}",
-                    newManager.getProvider().getClass().getName(),
-                    e);
+            log.error("Exception when initializing feature provider {}", newManager.getProvider().getClass().getName(), e);
             afterError.accept(newManager.getProvider(), e);
         } catch (Exception e) {
-            log.error(
-                    "Exception when initializing feature provider {}",
-                    newManager.getProvider().getClass().getName(),
-                    e);
+            log.error("Exception when initializing feature provider {}", newManager.getProvider().getClass().getName(), e);
             afterError.accept(newManager.getProvider(), new GeneralError(e));
         }
     }
@@ -249,9 +179,7 @@ class ProviderRepository {
      * @return boolean true if already registered, false otherwise
      */
     private boolean isStateManagerRegistered(FeatureProviderStateManager manager) {
-        return manager != null
-                && (this.stateManagers.containsValue(manager)
-                        || this.defaultStateManger.get().equals(manager));
+        return manager != null && (this.stateManagers.containsValue(manager) || this.defaultStateManger.get().equals(manager));
     }
 
     private void shutdownProvider(FeatureProviderStateManager manager) {
@@ -267,20 +195,14 @@ class ProviderRepository {
                 try {
                     provider.shutdown();
                 } catch (Exception e) {
-                    log.error(
-                            "Exception when shutting down feature provider {}",
-                            provider.getClass().getName(),
-                            e);
+                    log.error("Exception when shutting down feature provider {}", provider.getClass().getName(), e);
                 }
             });
         } catch (java.util.concurrent.RejectedExecutionException e) {
             try {
                 provider.shutdown();
             } catch (Exception ex) {
-                log.error(
-                        "Exception when shutting down feature provider {}",
-                        provider.getClass().getName(),
-                        ex);
+                log.error("Exception when shutting down feature provider {}", provider.getClass().getName(), ex);
             }
         }
     }
@@ -291,10 +213,7 @@ class ProviderRepository {
      * including the default feature provider.
      */
     public void shutdown() {
-        List<FeatureProviderStateManager> managersToShutdown = prepareShutdown();
-        if (managersToShutdown != null) {
-            completeShutdown(managersToShutdown);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -306,18 +225,7 @@ class ProviderRepository {
      * @return list of managers to shut down, or null if shutdown was already initiated
      */
     List<FeatureProviderStateManager> prepareShutdown() {
-        synchronized (registerStateManagerLock) {
-            if (isShuttingDown.getAndSet(true)) {
-                return null;
-            }
-
-            List<FeatureProviderStateManager> managersToShutdown = Stream.concat(
-                            Stream.of(this.defaultStateManger.get()), this.stateManagers.values().stream())
-                    .distinct()
-                    .collect(Collectors.toList());
-            this.stateManagers.clear();
-            return managersToShutdown;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -327,16 +235,6 @@ class ProviderRepository {
      * @param managersToShutdown the managers to shut down (from prepareShutdown)
      */
     void completeShutdown(List<FeatureProviderStateManager> managersToShutdown) {
-        managersToShutdown.forEach(this::shutdownProvider);
-        taskExecutor.shutdown();
-        try {
-            if (!taskExecutor.awaitTermination(EventSupport.SHUTDOWN_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                log.warn("Task executor did not terminate before the timeout period had elapsed");
-                taskExecutor.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            taskExecutor.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

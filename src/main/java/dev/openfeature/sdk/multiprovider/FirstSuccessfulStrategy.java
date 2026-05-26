@@ -24,36 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FirstSuccessfulStrategy implements Strategy {
 
     @Override
-    public <T> ProviderEvaluation<T> evaluate(
-            Map<String, FeatureProvider> providers,
-            String key,
-            T defaultValue,
-            EvaluationContext ctx,
-            Function<FeatureProvider, ProviderEvaluation<T>> providerFunction) {
-        List<ProviderError> collectedErrors = new ArrayList<>();
-
-        for (Map.Entry<String, FeatureProvider> entry : providers.entrySet()) {
-            String providerName = entry.getKey();
-            FeatureProvider provider = entry.getValue();
-            try {
-                ProviderEvaluation<T> res = providerFunction.apply(provider);
-                if (res.getErrorCode() == null) {
-                    // First successful result (no error code)
-                    return res;
-                }
-                // Record error-coded result
-                collectedErrors.add(ProviderError.fromResult(providerName, res.getErrorCode(), res.getErrorMessage()));
-            } catch (Exception e) {
-                // Record thrown exception
-                collectedErrors.add(ProviderError.fromException(providerName, e));
-            }
-        }
-
-        return MultiProviderEvaluation.<T>builder()
-                .errorMessage(
-                        ProviderError.buildAggregateMessage("No provider successfully responded", collectedErrors))
-                .errorCode(ErrorCode.GENERAL)
-                .providerErrors(collectedErrors)
-                .build();
+    public <T> ProviderEvaluation<T> evaluate(Map<String, FeatureProvider> providers, String key, T defaultValue, EvaluationContext ctx, Function<FeatureProvider, ProviderEvaluation<T>> providerFunction) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

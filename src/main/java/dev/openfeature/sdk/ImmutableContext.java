@@ -73,8 +73,7 @@ public final class ImmutableContext implements EvaluationContext {
      */
     @Override
     public String getTargetingKey() {
-        Value value = this.getValue(TARGETING_KEY);
-        return value == null ? null : value.asString();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -86,16 +85,7 @@ public final class ImmutableContext implements EvaluationContext {
      */
     @Override
     public EvaluationContext merge(EvaluationContext overridingContext) {
-        if (overridingContext == null || overridingContext.isEmpty()) {
-            return new ImmutableContext(this.asUnmodifiableMap());
-        }
-        if (this.isEmpty()) {
-            return new ImmutableContext(overridingContext.asUnmodifiableMap());
-        }
-
-        Map<String, Value> attributes = this.asMap();
-        EvaluationContext.mergeMaps(ImmutableStructure::new, attributes, overridingContext.asUnmodifiableMap());
-        return new ImmutableContext(attributes);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -108,7 +98,7 @@ public final class ImmutableContext implements EvaluationContext {
      */
     @Override
     public boolean equals(Object o) {
-        return isEqualTo(o);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -119,27 +109,15 @@ public final class ImmutableContext implements EvaluationContext {
      */
     @Override
     public int hashCode() {
-        Integer result = cachedHashCode;
-        if (result == null) {
-            synchronized (this) {
-                result = cachedHashCode;
-                if (result == null) {
-                    result = structure.hashCode();
-                    cachedHashCode = result;
-                }
-            }
-        }
-        return result;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @SuppressWarnings("all")
     private static class DelegateExclusions {
+
         @ExcludeFromGeneratedCoverageReport
-        public <T extends Structure> Map<String, Value> merge(
-                Function<Map<String, Value>, Structure> newStructure,
-                Map<String, Value> base,
-                Map<String, Value> overriding) {
-            return null;
+        public <T extends Structure> Map<String, Value> merge(Function<Map<String, Value>, Structure> newStructure, Map<String, Value> base, Map<String, Value> overriding) {
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 }
